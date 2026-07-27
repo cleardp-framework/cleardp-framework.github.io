@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="CLEAR-DP: Clearance-Guided Diffusion Policy for Safe Obstacle-Aware Bimanual Manipulation">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLEAR-DP: Clearance-Guided Diffusion Policy for Safe Obstacle-Aware Bimanual Manipulation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <nav class="site-nav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a class="site-wordmark" href="#top"><span class="site-pin">C</span> CLEAR-DP</a>
+      <div class="site-nav-links">
+        <a href="#overview">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#robotwin">RoboTwin</a>
+        <a href="#isaac">Isaac Sim</a>
+        <a href="#real">Real Robot</a>
+        <a href="#bibtex">BibTeX</a>
+      </div>
+    </div>
+  </nav>
+
+
+
+  <section class="site-hero" id="top">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+              <div class="hero-eyebrow"><span class="dot"></span>Obstacle-aware bimanual manipulation</div>
+              <h1 class="hero-title publication-title">
+                CLEAR-DP: Clearance-Guided Diffusion Policy for Safe Obstacle-Aware Bimanual Manipulation
+              </h1>
+            <p class="hero-subtitle">Inference-time clearance guidance for safer bimanual trajectories around static and dynamic obstacles.</p>
+            <div class="hero-authors publication-authors">
+              <span class="author-block">
+                  Anonymous Authors
+              </span>
+
+            </div>
+
+          <div class="columns is-centered has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <span class="btn btn-primary">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </span>
+              </span>
+                            <span class="link-block">
+                              <span class="btn btn-ghost">
+                                <span class="icon">
+                                  <i class="fab fa-youtube"></i>
+                                </span>
+                                <span>Video</span>
+                              </span>
+                            </span>
+
+              <span class="link-block">
+                <span class="btn btn-ghost">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (coming soon)</span>
+                </span>
+              </span>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section content-section" id="overview">
+    <div class="container is-max-desktop">
+      <div class="sec-head">
+        <div class="sec-eyebrow">Abstract</div>
+        <h2 class="sec-title">Safe action generation needs explicit clearance</h2>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified">
+            <p class="abstract-copy">
+            Bimanual manipulation in cluttered environments requires two arms to coordinate while avoiding collisions with surrounding objects. Although diffusion policies have achieved impressive performance in bimanual robot imitation learning, obstacle awareness is typically represented only implicitly through visual or point-cloud encoders. This paper proposes CLEAR-DP, a clearance-guided diffusion policy for obstacle-aware bimanual manipulation. The method segments task objects and obstacles from point-cloud observations and computes geometric clearance between nearby obstacles and the robot's hands or any grasped object. During inference, these clearance measurements define a safety cost for guided sampling. The gradient of this cost is applied only during a few final denoising steps, locally steering the predicted action trajectories away from obstacles while preserving the task-consistent behavior learned from demonstrations. In CLEAR-DP, the guidance is applied to a pretrained diffusion policy, and does not require modifying the policy inputs, changing the training objective, or retraining the policy for new obstacle configurations. The approach is evaluated on obstacle-aware bimanual manipulation tasks on a dual-UR5 setup in RoboTwin, humanoid in Isaac Sim, and on a Astribot robot platform, showcasing improved safety and robustness in static- and dynamic-obstacle scenarios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section content-section method-section" id="method">
+    <div class="container is-max-desktop">
+      <div class="sec-head">
+        <div class="sec-eyebrow">Method</div>
+        <h2 class="sec-title">Guide only the unsafe part of the trajectory</h2>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <div class="content has-text-justified">
+            <p>Overview of the proposed safety-guided diffusion framework for obstacle-aware bimanual manipulation. The framework segments the observed RGB-D scene and computes the clearance between the robot, manipulated object, and nearby obstacles. The resulting distance activates safety gating and, when necessary, guides the final diffusion denoising steps to generate a safer action trajectory.</p>
+          </div>
+          <div class="content has-text-justified architecture-figure">
+            <img src="bimanual/images/Overview.png" alt="Overview of the safety-guided bimanual manipulation method" style="width: 100%;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section demo-section" id="robotwin">
+    <div class="container is-max-desktop">
+      <div class="sec-head">
+        <div class="sec-eyebrow">Evaluation 01</div>
+        <h2 class="sec-title">Dual UR5 in RoboTwin</h2>
+      </div>
+      <p class="evaluation-description">
+        Results are evaluated in both static and dynamic obstacle environments. In the static setting, obstacles remain fixed while their scale and position are varied within the task workspace to test robustness to changed clearance conditions. In the dynamic setting, obstacles move through a bounded region near the robot’s nominal path, testing whether inference-time safety guidance can respond to changing obstacles while preserving task feasibility.
+      </p>
+      <div class="results-image"><img src="bimanual/images/result_robotwin.png" alt="Robotwin evaluation results" /></div>
+      <div class="demo-grid">
+        <div class="demo-card"><h3 class="title is-4">Handover</h3><div class="demo-quad"><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Handover_static_collide.mp4" type="video/mp4"></video><div class="demo-caption">Static · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Handover_static_success.mp4" type="video/mp4"></video><div class="demo-caption">Static · Success</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Handover_dynamic_collide.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Handover_dynamic_success.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Success</div></div></div></div>
+        <div class="demo-card"><h3 class="title is-4">Pick roller</h3><div class="demo-quad"><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Roller_static_collide.mp4" type="video/mp4"></video><div class="demo-caption">Static · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Roller_static_success.mp4" type="video/mp4"></video><div class="demo-caption">Static · Success</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Roller_dynamic_collide.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Roller_dynamic_success.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Success</div></div></div></div>
+        <div class="demo-card"><h3 class="title is-4">Place cup</h3><div class="demo-quad"><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Place_cup_static_collide.mp4" type="video/mp4"></video><div class="demo-caption">Static · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Place_cup_static_success.mp4" type="video/mp4"></video><div class="demo-caption">Static · Success</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Place_cup_dynamic_collide.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Robotwin/Place_cup_dynamic_success.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Success</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section demo-section demo-section-alt" id="isaac">
+    <div class="container is-max-desktop">
+      <div class="sec-head">
+        <div class="sec-eyebrow">Evaluation 02</div>
+        <h2 class="sec-title">Humanoid in Isaac Sim</h2>
+      </div>
+      <p class="evaluation-description">
+        Similar to RoboTwin, we consider static obstacle configurations in which the obstacle remains fixed during each rollout, while its pose and scale are varied across trials to evaluate robustness to changes in obstacle placement and geometry. In humanoid simulation, we consider a dynamic-obstacle setting in which the obstacle is absent at the beginning of the rollout but suddenly appears during evaluation.
+      </p>
+      <div class="results-image-pair">
+        <img src="bimanual/images/result_issacsim_1.png" alt="Isaac Sim evaluation results, figure 1" />
+        <img src="bimanual/images/result_issacsim_2.png" alt="Isaac Sim evaluation results, figure 2" />
+      </div>
+      <div class="demo-grid">
+        <div class="demo-card"><h3 class="title is-4">Handover</h3><div class="demo-pair"><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Issacsim/Handover_dynamic_collide.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Issacsim/Handover_dynamic_success.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Success</div></div></div></div>
+        <div class="demo-card"><h3 class="title is-4">Pick roller</h3><div class="demo-pair"><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Issacsim/Roller_dynamic_collide.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Issacsim/Roller_dynamic_success.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Success</div></div></div></div>
+        <div class="demo-card"><h3 class="title is-4">Place cup</h3><div class="demo-pair"><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Issacsim/Cup_dynamic_collide.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Collision</div></div><div class="demo-video"><video controls loop playsinline preload="metadata"><source src="./bimanual/video/Issacsim/Cup_dynamic_success.mp4" type="video/mp4"></video><div class="demo-caption">Dynamic · Success</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section demo-section" id="real">
+    <div class="container is-max-desktop">
+      <div class="sec-head">
+        <div class="sec-eyebrow">Evaluation 03</div>
+        <h2 class="sec-title">Real humanoid</h2>
+      </div>
+      <p class="demo-lead">Obstacle-aware bimanual manipulation demonstrations on the Astribot S1 robot platform.</p>
+      <div class="demo-grid">
+        <div class="demo-card">
+          <div class="demo-pair">
+            <div class="demo-video">
+              <video controls loop playsinline preload="metadata"><source src="./bimanual/video/Real/Real_failure.mp4" type="video/mp4"></video>
+              <div class="demo-caption">Failure</div>
+            </div>
+            <div class="demo-video">
+              <video controls loop playsinline preload="metadata"><source src="./bimanual/video/Real/Real_success.mp4" type="video/mp4"></video>
+              <div class="demo-caption">Success</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section bibtex-section" id="bibtex">
+    <div class="container is-max-desktop">
+        <div class="sec-head">
+          <div class="sec-eyebrow">Citation</div>
+          <h2 class="sec-title">BibTeX</h2>
+        </div>
+        <pre><code>@article{cleardp_2026,
+    title={CLEAR-DP: Clearance-Guided Diffusion Policy for Safe Obstacle-Aware Bimanual Manipulation},
+    author={},
+    booktitle={},
+    year={2026}
+    }</code></pre>
+        </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Here</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
